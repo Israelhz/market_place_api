@@ -1,15 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
-  before(:each) { request.headers['Accept'] = "application/vnd.marketplace.v1" }
 
   describe "GET #show" do
     before(:each) do
       @user = create :user
-      get :show, params: { id: @user.id }, format: :json
+      get :show, params: { id: @user.id }
     end
 
-    it "returns the information about a reporter on a hash" do
+    it "returns the information about a user on a hash" do
       user_response = json_response
       expect(user_response[:email]).to eql @user.email
     end
@@ -22,7 +21,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when is successfully created" do
       before(:each) do
         @user_attributes = attributes_for :user
-        post :create, params: { user: @user_attributes }, format: :json
+        post :create, params: { user: @user_attributes }
       end
 
       it "renders the json representation for the user record just created" do
@@ -38,7 +37,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         #notice I'm not including the email
         @invalid_user_attributes = { password: "12345678",
                                      password_confirmation: "12345678" }
-        post :create, params: { user: @invalid_user_attributes }, format: :json
+        post :create, params: { user: @invalid_user_attributes }
       end
 
       it "renders an errors json" do
@@ -98,7 +97,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe "DELETE #destroy" do
     before(:each) do
       @user = create :user
-      delete :destroy, params: { id: @user.id }, format: :json
+      delete :destroy, params: { id: @user.id }
     end
 
     it { should respond_with 204 }
