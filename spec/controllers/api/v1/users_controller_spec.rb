@@ -56,9 +56,13 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
   describe "PUT/PATCH #update" do
 
+    before :each do
+      @user = create :user
+      api_authorization_header(@user.auth_token)
+    end
+
     context "when is successfully updated" do
       before(:each) do
-        @user = create :user
         patch :update, params: { id: @user.id,
                                  user: { email: "newmail@example.com" } },
                        format: :json
@@ -74,7 +78,6 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     context "when is not created" do
       before(:each) do
-        @user = create :user
         patch :update, params: { id: @user.id,
                                  user: { email: "bademail.com" } },
                        format: :json
@@ -85,7 +88,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
         expect(user_response).to have_key(:errors)
       end
 
-      it "renders the json errors on whye the user could not be created" do
+      it "renders the json errors on why the user could not be created" do
         user_response = json_response
         expect(user_response[:errors][:email]).to include "is invalid"
       end
@@ -97,7 +100,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe "DELETE #destroy" do
     before(:each) do
       @user = create :user
-      delete :destroy, params: { id: @user.id }
+      api_authorization_header @user.auth_token
+      delete :destroy, params: { id: @user.auth_token }
     end
 
     it { should respond_with 204 }
