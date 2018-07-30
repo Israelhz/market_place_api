@@ -105,7 +105,18 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
         expect(product_response[:errors][:price]).to include "is not a number"
       end
 
-      it { should respond_with 422 }
+      it { is_expected.to respond_with 422 }
     end
+  end
+
+  describe "DELETE #destroy" do
+    before(:each) do
+      @user = create :user
+      @product = create :product, user: @user
+      api_authorization_header @user.auth_token
+      delete :destroy, { user_id: @user.id, id: @product.id }
+    end
+
+    it { is_expected.to respond_with 204 }
   end
 end
