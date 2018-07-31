@@ -30,6 +30,7 @@ gem 'coffee-rails', '~> 4.2'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'kaminari'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
