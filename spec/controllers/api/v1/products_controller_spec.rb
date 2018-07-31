@@ -28,16 +28,18 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it "returns 4 records from the database" do
-        products_response = json_response
+        products_response = json_response[:products]
         expect(products_response.count).to eq 4
       end
 
       it "returns the user object into each product" do
-        products_response = json_response
+        products_response = json_response[:products]
         products_response.each do |product_response|
           expect(product_response[:user]).to be_present
         end
       end
+
+      it_behaves_like "paginated list"
 
       it { is_expected.to respond_with 200 }
     end
@@ -51,7 +53,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       end
 
       it "returns just the products that belong to the user" do
-        products_response = json_response
+        products_response = json_response[:products]
         products_response.each do |product_response|
           expect(product_response[:user][:email]).to eql @user.email
         end
