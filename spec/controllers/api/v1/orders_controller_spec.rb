@@ -6,14 +6,20 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
       current_user = create :user
       api_authorization_header current_user.auth_token
       4.times { create :order, user: current_user }
-      create :order
       get :index, params: { user_id: current_user.id }
     end
 
     it "returns 4 order records from the user" do
-      orders_response = json_response
-      expect(orders_response.count).to eq 4
+      orders_response = json_response[:orders]
+      expect(orders_response.size).to eq 4
     end
+
+    # These lines are the ones added to test the pagination
+    it { expect(json_response).to have_key(:meta) }
+    it { expect(json_response[:meta]).to have_key(:pagination) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:per_page) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:total_pages) }
+    it { expect(json_response[:meta][:pagination]).to have_key(:total_objects) }
 
     it { should respond_with 200 }
   end
