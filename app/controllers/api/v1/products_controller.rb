@@ -5,10 +5,7 @@ class Api::V1::ProductsController < ApplicationController
   def index
     products = Product.search(params).page(params[:page]).per(params[:per_page])
     serialized_products = ActiveModelSerializers::SerializableResource.new(products, adapter: :json).as_json
-    render json: serialized_products.merge( meta: { pagination:
-                                                   { per_page: params[:per_page],
-                                                     total_pages: products.total_pages,
-                                                     total_objects: products.total_count } } )
+    render json: serialized_products.merge( meta: pagination(products, params[:per_page]) )
   end
 
 
