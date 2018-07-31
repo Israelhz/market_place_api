@@ -31,6 +31,7 @@ gem 'coffee-rails', '~> 4.2'
 
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'kaminari'
+gem 'delayed_job_active_record'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
