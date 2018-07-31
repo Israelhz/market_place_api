@@ -15,6 +15,7 @@ RSpec.describe User, type: :model do
   it { is_expected.to allow_value('example@domain.com').for :email }
   it { is_expected.to validate_uniqueness_of :auth_token }
   it { is_expected.to have_many :products }
+  it { is_expected.to have_many :orders }
 
   it { is_expected.to be_valid }
 

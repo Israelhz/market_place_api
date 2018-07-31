@@ -16,6 +16,9 @@ RSpec.describe Product, type: :model do
   it { is_expected.to validate_numericality_of(:price).is_greater_than_or_equal_to(0) }
   it { is_expected.to belong_to :user }
 
+  it { is_expected.to have_many(:placements) }
+  it { is_expected.to have_many(:orders).through(:placements) }
+
   describe ".filter_by_title" do
     before(:each) do
       @product1 = create :product, title: "A plasma TV"
